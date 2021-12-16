@@ -86,7 +86,7 @@
                 <!-- Blog post-->
                 {% for g in game_list %}
                 <div class="card mb-4">
-                    <a href="#!"><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg"
+                    <a href="#!"><img class="card-img-top" src="{{g.head_image.url}}"
                             alt="..." /></a>
                     <div class="card-body">
                         <h2 class="card-title h4">{{ g.title }}</h2>
