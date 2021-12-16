@@ -8,6 +8,11 @@
                     <a href="#!"><img class="card-img-top" src="{{g.head_image.url}}"
                             alt="{{g}}의 head image" /></a>
                     <div class="card-body">
+                        {% if g.category %}
+                        <span class="badge badge-dark float-right">{{g.category}}</span>
+                        {% else %}
+                        <span class="badge badge-dark float-right">미분류</span>
+                        {% endif %}
                         <h2 class="card-title h4">{{ g.title }}<span class="float-right small">{{g.price}}원</span></h2>
                         <p class="card-text">{{ g.content | truncatewords:50 }}</p>
                         <a class="btn btn-primary" href="{{g.get_absolute_url}}">Read more →</a>
