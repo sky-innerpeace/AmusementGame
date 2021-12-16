@@ -6,7 +6,7 @@
 </head>
 <body>
     <h1>Game</h1>
-    {% for g in games %}
+    {% for g in game_list %}
         <hr/>
         <h2><a href="{{g.get_absolute_url}}">{{ g.title }}</a></h2>
         <h4>{{ g.release_date }}</h4>
