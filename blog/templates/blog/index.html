@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>Game</h1>
+    {% for g in games %}
+        <hr/>
+        <h2><a href="{{g.get_absolute_url}}">{{ g.title }}</a></h2>
+        <h4>{{ g.release_date }}</h4>
+        <p> {{ g.content }}</p>
+    {% endfor %}
+</body>
+</html>
