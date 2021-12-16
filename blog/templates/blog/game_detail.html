@@ -12,6 +12,11 @@
                             <h1 class="fw-bolder mb-1">{{ game.title }}</h1>
                             <!-- Post meta content-->
                             <div class="text-muted fst-italic mb-2">Release Date : {{ game.release_date }} &nbsp | &nbsp Publisher : {{ game.publisher }}</div>
+                            {% if game.category %}
+                            <span class="badge badge-dark float-right">{{game.category}}</span>
+                            {% else %}
+                            <span class="badge badge-dark foat-right">미분류</span>
+                            {% endif %}
                             <!-- Post categories-->
                             <a class="badge bg-secondary text-decoration-none link-light" href="#!">Web Design</a>
                             <a class="badge bg-secondary text-decoration-none link-light" href="#!">Freebies</a>

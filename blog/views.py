@@ -16,22 +16,33 @@ class GameList(ListView):
         context['no_category_game_count'] = Game.objects.filter(category=None).count()
         return context
 
+
+
 class GameDetail(DetailView):
     model = Game
     ordering = '-pk'
 
-# def index(request):
-#     games = Game.objects.all().order_by('-pk')
-#     return render(request, 'blog/index.html',
-#                   {
-#                       'games' : games
-#                   }
-#                   )
-#
-# def single_game_page(request, pk):
-#     game = Game.objects.get(pk=pk)
-#     return render(request, 'blog/single_game_page.html',
-#                   {
-#                       'game' : game
-#                   }
-#                   )
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context=super(GameDetail, self).get_context_data()
+        context['categories'] = Category.objects.all()
+        context['no_category_game_count'] = Game.objects.filter(category=None).count()
+        return context
+
+def category_page(request, slug):
+    if slug == 'no_category':
+        category = '미분류'
+        game_list = Game.objects.filter(category=None)
+    else:
+        category = Category.objects.get(slug=slug)
+        game_list = Game.objects.filter(category=category)
+
+    return render(
+        request,
+        'blog/game_list.html',
+        {
+            'game_list': game_list,
+            'categories': Category.objects.all(),
+            'no_category_game_count': Game.objects.filter(category=None).count(),
+            'category': category,
+        }
+    )
