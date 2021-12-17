@@ -1,11 +1,30 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.exceptions import PermissionDenied
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 # Create your views here.
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 
+from .forms import CommentForm
 from blog.models import Game, Category
+
+def new_comment(request, pk):
+    if request.user.is_authenticated:
+        game = get_object_or_404(Game, pk=pk)
+
+        if request.method == 'POST':
+            comment_form = CommentForm(request.POST)
+
+            if comment_form.is_valid():
+                comment = comment_form.save(commit=False)
+                comment.game = game
+                comment.author = request.user
+                comment.save()
+                return redirect(comment.get_absolute_url())
+        else:
+            return redirect(game.get_absolute_url())
+    else:
+        raise PermissionDenied
 
 
 class GameList(ListView):
@@ -27,6 +46,7 @@ class GameDetail(DetailView):
         context=super(GameDetail, self).get_context_data()
         context['categories'] = Category.objects.all()
         context['no_category_game_count'] = Game.objects.filter(category=None).count()
+        context['comment_form'] = CommentForm
         return context
 
 
@@ -77,3 +97,4 @@ def category_page(request, slug):
             'category': category,
         }
     )
+
