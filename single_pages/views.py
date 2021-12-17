@@ -15,4 +15,17 @@ def about_me(request):
     return render(request, 'single_pages/about_me.html')
 
 def amuse(request):
-    return render(request, 'single_pages/amuse.html')
+    game_statistic = {'MOBA':0, 'Simulation':0, 'MMORPG':0, 'Horror':0, 'Adventure':0}
+    statistic_list = []
+    game_list = Game.objects.all()
+    for game in game_list:
+        game_statistic[f'{game.category}'] += 1
+    statistic_list.append(game_statistic)
+    return render(
+        request,
+        'single_pages/amuse.html',
+        {
+            'game_statistic':game_statistic
+
+        }
+    )
