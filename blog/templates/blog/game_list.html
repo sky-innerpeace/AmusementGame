@@ -60,60 +60,92 @@
 <!--                </div>-->
 <!--            </div>-->
 <!--        </header>-->
-        <!-- Section-->
+<!-- Section-->
 {% if user.is_authenticated %}
-    {% if user.is_superuser or user.is_staff %}
-        <a class="btn btn-info btn-sm float-right" href="/blog/create_game/" role="button">
-            <i class="fas fa-pen"></i>&nbsp;&nbsp;New Game Post
-        </a>
-    {% endif %}
+{% if user.is_superuser or user.is_staff %}
+<a class="btn btn-info btn-sm float-right" href="/blog/create_game/" role="button">
+    <i class="fas fa-pen"></i>&nbsp;&nbsp;New Game Post
+</a>
+{% endif %}
 {% endif %}
 <h1>Game {% if category %}<span class="badge badge-dark">{{category}}</span>{%endif%}</h1> <!-- 제목 .-->
-    {% if game_list.exists %}
-        <section class="py-5">
-            <div class="container px-4 px-lg-5 mt-5">
-                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-                    {% for game in game_list %}
-                    <div class="col mb-5">
-                        <div class="card h-100 btn-outline-dark">
-                            <!-- Product image-->
-                            <a href="{{game.get_absolute_url}}">
-                                <img class="card-img-top" src="{{game.head_image.url}}" alt="{{game}}의 head image" />
-                            </a>
-                                <!-- Product details-->
-                            <div class="card-body btn mt-auto p-4">
-                                <div class="text-center">
-                                    <!-- Product name-->
-                                    <h5 class="fw-bolder">{{game.title}}</h5>
-                                    <!-- Product reviews-->
-                                    <div class="d-flex justify-content-center small text-warning mb-2">
-                                        <div class="bi-star-fill">{{game.get_content_markdown | truncatewords_html:50 | safe}}</div>
-                                    </div>
-                                    <!-- Product price-->
-                                    <div>{{game.price}}원</div>
-                                    <hr/>
-                                    {% if game.can_multi_play %}
-                                    <div>
-                                        <i class="fas fa-users"></i><br/>멀티플레이<br/>가능
-                                    </div>
-                                    {% else %}
-                                    <div>
-                                        <i class="fas fa-users-slash"></i><br/>멀티플레이<br/>
-                                        불가능
-                                    </div>
-                                    {% endif %}
+{% if game_list.exists %}
+<section class="py-5">
+    <div class="container px-4 px-lg-5 mt-5">
+        <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+            {% for game in game_list %}
+            <div class="col mb-5">
+                <div class="card h-100 btn-outline-dark">
+                    <!-- Product image-->
+                    <a href="{{game.get_absolute_url}}">
+                        <img class="card-img-top" src="{{game.head_image.url}}" alt="{{game}}의 head image"/>
+                    </a>
+                    <!-- Product details-->
+                    <div class="card-body btn mt-auto p-4">
+                        <div class="text-center">
+                            <!-- Product name-->
+                            <h5 class="fw-bolder">{{game.title}}</h5>
+                            <!-- Product reviews-->
+                            <div class="d-flex justify-content-center small text-warning mb-2">
+                                <div class="bi-star-fill">{{game.get_content_markdown | truncatewords_html:50 | safe}}
                                 </div>
                             </div>
-                            <!-- Product actions-->
-                            <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
-                                <a class="btn btn-warning mt-auto" href="{{game.get_absolute_url}}">Read more →</a>
+                            <!-- Product price-->
+                            <div>{{game.price}}원</div>
+                            <hr/>
+                            {% if game.can_multi_play %}
+                            <div>
+                                <i class="fas fa-users"></i><br/>멀티플레이<br/>가능
                             </div>
+                            {% else %}
+                            <div>
+                                <i class="fas fa-users-slash"></i><br/>멀티플레이<br/>
+                                불가능
+                            </div>
+                            {% endif %}
+                            <br/>
+                            {% if g.category %}
+                                <div class="badge badge-dark">{{g.category}}</div>
+                            {% else %}
+                                <div class="badge badge-dark">미분류</div>
+                            {% endif %}
                         </div>
                     </div>
-
-                    {% endfor %}
+                    <!-- Product actions-->
+                    <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
+                        <a class="btn btn-warning mt-auto" href="{{game.get_absolute_url}}">Read more →</a>
+                    </div>
                 </div>
             </div>
-        </section>
+            {% endfor %}
+            {% else %}
+            <h2>아직 게시물이 없습니다.</h2>
+            {% endif %}
+        </div>
+    </div>
+                    <!-- Paginiation -->
+            {% if is_paginated %}
+            <ul class="pagination justify-content-center my-4">
+                {% if page_obj.has_next %}
+                <li class="page-item"> <!--older쪽이 있다면 -->
+                    <a class="page-link" href="?page={{ page_obj.next_page_number }}">&larr; Older</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">&larr; Older</a>
+                </li>
+                {% endif %}
+                {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}">Newer &rarr;</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">Newer &rarr;</a>
+                </li>
+                {% endif %}
+            </ul>
+
+</section>
 {% endif %}
 {% endblock %}
