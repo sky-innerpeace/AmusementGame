@@ -1,0 +1,15 @@
+{% extends 'blog/base_full_width.html' %}
+
+{% block head_title %}Edit Game Post{% endblock %}
+
+{% block main_area %}
+    <h1>Edit Game Post</h1>
+    <hr/>
+    <form method="post" enctype="multipart/form-data">
+        {%csrf_token %}
+        <table>
+            {{form}}
+        </table>
+        <button type="submit" class="btn btn-outline-warning float-right">Submit</button>
+    </form>
+{% endblock %}
