@@ -68,11 +68,16 @@
 </a>
 {% endif %}
 {% endif %}
-<h1>Game {% if category %}<span class="badge badge-dark">{{category}}</span>{%endif%}</h1> <!-- 제목 .-->
-{% if game_list.exists %}
+<h1>Game <!-- 제목 .-->
+    {% if category %}<span class="badge badge-dark">{{category}}</span>{%endif%}
+    {% if search_info %} <small class="text-muted">{{search_info}}</small>{%endif%}
+</h1>
+
 <section class="py-5">
+
     <div class="container px-4 px-lg-5 mt-5">
         <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+            {% if game_list.exists %}
             {% for game in game_list %}
             <div class="col mb-5">
                 <div class="card h-100 btn-outline-dark">
@@ -119,7 +124,7 @@
             </div>
             {% endfor %}
             {% else %}
-            <h2>아직 게시물이 없습니다.</h2>
+            <h2>아직<br/>게시물이<br/>없습니다.</h2>
             {% endif %}
         </div>
     </div>

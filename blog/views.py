@@ -1,6 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, redirect, get_object_or_404
+from django.db.models import Q
 
 # Create your views here.
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
@@ -79,6 +80,24 @@ class GameUpdate(LoginRequiredMixin, UpdateView):
         else:
             raise PermissionDenied
 
+
+class GameSearch(GameList):
+    paginate_by = None
+
+    def get_queryset(self):
+        q = self.kwargs['q']
+        game_list = Game.objects.filter(
+            # 제목, 카테고리에 포함되어 있는지
+            Q(title__contains=q) | Q(category__name__contains=q)
+        ).distinct()
+        return game_list
+
+    def get_context_data(self, **kwargs):
+        context = super(GameSearch, self).get_context_data()
+        q = self.kwargs['q']
+        context['search_info'] = f'Search : {q} ({self.get_queryset().count()})'
+
+        return context
 
 def category_page(request, slug):
     if slug == 'no_category':
