@@ -15,11 +15,8 @@
                             {% if game.category %}
                             <span class="badge badge-dark float-right">{{game.category}}</span>
                             {% else %}
-                            <span class="badge badge-dark foat-right">미분류</span>
+                            <span class="badge badge-dark float-right">미분류</span>
                             {% endif %}
-                            <!-- Post categories-->
-                            <a class="badge bg-secondary text-decoration-none link-light" href="#!">Web Design</a>
-                            <a class="badge bg-secondary text-decoration-none link-light" href="#!">Freebies</a>
                         </header>
                         <!-- Preview image figure-->
                         <figure class="mb-4"><img class="img-fluid rounded" src="{{game.head_image.url}}" alt="..." /></figure>
@@ -70,6 +67,6 @@
                             </div>
                         </div>
                     </div>
-                    </div>
+
                 </div>
 {% endblock %}

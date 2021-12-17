@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.shortcuts import render, redirect
 
 # Create your views here.
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, CreateView
 
 from blog.models import Game, Category
 
@@ -17,7 +18,6 @@ class GameList(ListView):
         return context
 
 
-
 class GameDetail(DetailView):
     model = Game
     ordering = '-pk'
@@ -27,6 +27,22 @@ class GameDetail(DetailView):
         context['categories'] = Category.objects.all()
         context['no_category_game_count'] = Game.objects.filter(category=None).count()
         return context
+
+
+class GameCreate(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+    model = Game
+    fields = ['title', 'content', 'head_image', 'price', 'category', 'release_date', 'can_multi_play']
+
+    def test_func(self):
+        return self.request.user.is_superuser or self.request.user.is_staff
+
+    def form_valid(self, form):
+        current_user = self.request.user
+        if current_user.is_authenticated and (current_user.is_staff or current_user):
+            form.instance.publisher = current_user
+            return super(GameCreate, self).form_valid(form)
+        else:
+            return redirect('/blog/')
 
 def category_page(request, slug):
     if slug == 'no_category':
