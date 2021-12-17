@@ -1,5 +1,5 @@
 {% extends 'blog/base_full_width.html' %}
-
+{% load crispy_forms_tags %}
 {% block head_title %}Edit Game Post{% endblock %}
 
 {% block main_area %}
@@ -7,9 +7,9 @@
     <hr/>
     <form method="post" enctype="multipart/form-data">
         {%csrf_token %}
-        <table>
-            {{form}}
-        </table>
+        {{ form | crispy }}
+        <br/>
         <button type="submit" class="btn btn-outline-warning float-right">Submit</button>
     </form>
+{{ form.media }}
 {% endblock %}
