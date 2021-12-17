@@ -7,39 +7,55 @@
     <title> {% block head_title %} Game {% endblock %}</title>
     <link href="{% static 'blog/bootstrap/bootstrap.min.css' %}" rel="stylesheet" type="text/css" media="screen">
     <script src="https://kit.fontawesome.com/f358ce8e32.js" crossorigin="anonymous"></script>
+    <style>
+    body {
+        background: url('/static/single_pages/images/amuse4.jpg') no-repeat center center fixed;
+        background-size:150%;
+    }
+    @font-face {
+    font-family: 'IM_Hyemin-Bold';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2106@1.1/IM_Hyemin-Bold.woff2') format('woff');
+    font-weight: normal;
+    font-style: normal;
+    }
+    * {
+        font-family: 'IM_Hyemin-Bold';
+        font-weight: bolder;
+    }
+    </style>
 </head>
 
 <body>
 {% include 'blog/navbar.html' %}
 
 
-<div class="container mt-3">
+<div class="container mt-3" >
     <div class="row">
-        <div class="col-md-8 col-lg-9" id="main-area">
+        <div class="col-md-8 col-lg-9" id="main-area"  style="background-color:#dbcdc7; border-radius: 0.5em;">
             {% block main_area %}
             {% endblock %}
         </div>
         <div class="col-md-4 col-lg-3">
             <div class="card mb-4">
-                <div class="card-header"><i class="fas fa-search"></i> &nbsp;&nbsp;Search</div>
-                <div class="card-body">
+                <div class="card-header" ><i class="fas fa-search"></i> &nbsp;&nbsp;Search</div>
+                <div class="card-body" style="background-color:#dbcdc7;">
                     <div class="input-group">
                         <input class="form-control" type="text" placeholder="Enter search term..."
                                id="search-input"/>
-                        <button class="btn btn-warning" id="button-search" type="button" onclick="searchGame();">Go!</button>
+                        <button class="btn btn-secondary" id="button-search" type="button" onclick="searchGame();">Go!</button>
                     </div>
                 </div>
             </div>
             <!-- Categories widget-->
             <div class="card mb-4" id="categories-card">
                 <div class="card-header">Categories</div>
-                <div class="card-body">
+                <div class="card-body" style="background-color:#dbcdc7;">
                     <div class="row">
                         <ul>
                             {% for category in categories %}
-                            <li><a href="{{ category.get_absolute_url }}" style="color: #8DBE05;">{{ category }} ({{category.game_set.count}})</a></li>
+                            <li><a href="{{ category.get_absolute_url }}" style="color: #292b25;">{{ category }} ({{category.game_set.count}})</a></li>
                             {% endfor %}
-                            <li><a href="/blog/category/no_category/" style="color: #8DBE05;">미분류 ({{no_category_game_count}})</a></li>
+                            <li><a href="/blog/category/no_category/" style="color: #292b25;">미분류 ({{no_category_game_count}})</a></li>
 
                         </ul>
                     </div>

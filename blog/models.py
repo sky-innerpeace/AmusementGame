@@ -39,6 +39,13 @@ class Game(models.Model):
     def get_content_markdown(self):
         return markdown(self.content)
 
+    def get_avatar_url(self):
+        if self.publisher.socialaccount_set.exists():
+            return self.publisher.socialaccount_set.first().get_avatar_url()
+        else:
+            return f'https://doitdjango.com/avatar/id/386/eea990dfe51e2ca3/svg/{self.publisher.email}/'
+
+
 class Comment(models.Model):
     game = models.ForeignKey(Game, on_delete=models.CASCADE)    #글이 삭제되면 연관된 모든 댓글도 삭제제
     author = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -55,4 +62,4 @@ class Comment(models.Model):
         if self.author.socialaccount_set.exists():
             return self.author.socialaccount_set.first().get_avatar_url()
         else:
-            return 'https://doitdjango.com/avatar/id/386/6bc93931756fa82c/svg/{{self.author.email}}/'
+            return f'https://doitdjango.com/avatar/id/386/eea990dfe51e2ca3/svg/{self.author.email}/'
