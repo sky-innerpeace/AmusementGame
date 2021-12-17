@@ -1,5 +1,7 @@
 from django.contrib.auth.models import User
 from django.db import models
+from markdown import markdown
+from markdownx.models import MarkdownxField
 
 # Create your models here.
 class Category(models.Model):
@@ -18,7 +20,7 @@ class Category(models.Model):
 
 class Game(models.Model):
     title = models.CharField(max_length=30)
-    content = models.TextField()
+    content = MarkdownxField()
 
     head_image = models.ImageField(upload_to='blog/images/%Y/%m/%d/', blank=True)
     price = models.IntegerField()
@@ -33,3 +35,6 @@ class Game(models.Model):
 
     def get_absolute_url(self):
         return f'/blog/{self.pk}'
+
+    def get_content_markdown(self):
+        return markdown(self.content)

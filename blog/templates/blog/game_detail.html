@@ -31,7 +31,7 @@
                         <figure class="mb-4"><img class="img-fluid rounded" src="{{game.head_image.url}}" alt="..." /></figure>
                         <!-- Post content-->
                         <section class="mb-5">
-                            <p> {{ game.content }} </p>
+                            <p> {{ game.get_content_markdown | safe }} </p>
                         </section>
                     </article>
                     <!-- Comments section-->

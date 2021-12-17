@@ -87,7 +87,7 @@
                                     <h5 class="fw-bolder">{{game.title}}</h5>
                                     <!-- Product reviews-->
                                     <div class="d-flex justify-content-center small text-warning mb-2">
-                                        <div class="bi-star-fill">{{game.content | truncatewords:50}}</div>
+                                        <div class="bi-star-fill">{{game.get_content_markdown | truncatewords_html:50 | safe}}</div>
                                     </div>
                                     <!-- Product price-->
                                     <div>{{game.price}}원</div>
