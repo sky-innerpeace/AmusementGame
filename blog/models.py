@@ -25,6 +25,7 @@ class Game(models.Model):
     head_image = models.ImageField(upload_to='blog/images/%Y/%m/%d/', blank=True)
     price = models.IntegerField()
     publisher = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    
 
     category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.SET_NULL)
     release_date = models.DateField()

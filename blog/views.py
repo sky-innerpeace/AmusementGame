@@ -83,6 +83,7 @@ class GameUpdate(LoginRequiredMixin, UpdateView):
 
 class GameSearch(GameList):
     paginate_by = None
+    ordering = '-pk'
 
     def get_queryset(self):
         q = self.kwargs['q']
