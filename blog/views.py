@@ -88,7 +88,7 @@ class GameSearch(GameList):
         q = self.kwargs['q']
         game_list = Game.objects.filter(
             # 제목, 카테고리에 포함되어 있는지
-            Q(title__contains=q) | Q(category__name__contains=q)
+            Q(title__icontains=q) | Q(category__name__contains=q)
         ).distinct()
         return game_list
 
