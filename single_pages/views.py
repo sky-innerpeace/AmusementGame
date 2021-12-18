@@ -22,14 +22,12 @@ def about_me(request):
 
 def amuse(request):
     game_statistic = {'MOBA':0, 'Simulation':0, 'MMORPG':0, 'Horror':0, 'Adventure':0, '미분류': 0}
-    statistic_list = []
     game_list = Game.objects.all()
     for game in game_list:
         if(game.category!=None):
             game_statistic[f'{game.category}'] += 1
         else:
             game_statistic['미분류'] += 1
-    statistic_list.append(game_statistic)
     return render(
         request,
         'single_pages/amuse.html',

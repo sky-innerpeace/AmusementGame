@@ -1,81 +1,126 @@
 {% extends 'blog/base.html' %}
 {% load crispy_forms_tags %}
 {% block head_title %}
-    {{ game.title }} - Game
+{{ game.title }} - Game
 {% endblock %}
 {% block main_area %}
-                    <!-- Post content-->
-                    <div id="post-area">
-                    <article>
-                        <!-- Post header-->
-                        <header class="mb-4">
-                            <!-- Post title-->
-                            <h1 class="fw-bolder mb-1">{{ game.title }}</h1>
-                            <!-- Post meta content-->
-                            <div class="text-muted fst-italic mb-2">Release Date : {{ game.release_date | date:"Y-m-d" }} &nbsp | &nbsp Publisher : {{ game.publisher }}</div>
-                             <!-- multi play 여부 -->
-                            {% if game.can_multi_play %}
-                                <span class="float-left">&nbsp;&nbsp;<i class="fas fa-users"></i>&nbsp;멀티플레이 가능</span>
-                            {% else %}
-                                <span class="float-left" style="color:red;">&nbsp;&nbsp;<i class="fas fa-users-slash"></i>&nbsp;멀티플레이 불가능</span>
-                            {% endif %}
-                            <!-- 카테고리 -->
-                            {% if game.category %}
-                            <span class="badge badge-dark float-right">{{game.category}}</span>
-                            {% else %}
-                            <span class="badge badge-dark float-right">미분류</span>
-                            {% endif %}
-                            <br/><br/>
-                            {% if user.is_authenticated and user == game.publisher %}
-                            <div>
-                                <a class="btn btn-info btn-sm float-right" href="/blog/update_game/{{game.pk}}/" role="button">
-                                    <i class="fas fa-pen"></i> Edit Game Information
-                                </a>
-                            </div>
-                            {% endif %}
-                            <br/><br/>
-                        </header>
-                        <!-- Preview image figure-->
-                        <figure class="mb-4"><img class="img-fluid rounded" src="{{game.head_image.url}}" alt="..." /></figure>
-                        <!-- Post content-->
-                        <section class="mb-5">
-                            <p> {{ game.get_content_markdown | safe }} </p>
-                        </section>
-                    </article>
-                    <!-- Comments section-->
-                    <div class="mb-5" id="comment-area">
-                        <div class="card bg-light">
-                            <div class="card-body">
-                                <!-- Comment form-->
-                                {% if user.is_authenticated %}
-                                <form class="mb-4" id="comment-form" method="POST" action="{{game.get_absolute_url}}new_comment/">
-                                    {% csrf_token %}
-                                    <div class="form-group">
-                                        {{comment_form | crispy }}
-                                    </div>
-                                    <button type="submit" class="btn btn-outline-warning">Submit</button>
-                                </form>
-                                {% else %}
-                                <a role="button" class="btn btn-outline-dark" href="#"
-                                data-toggle="modal" data-target="#loginModal">Log in and leave a comment</a>
+<!-- Post content-->
+<div id="post-area">
+    <article>
+        <!-- Post header-->
+        <header class="mb-4">
+            <!-- Post title-->
+            <h1 class="fw-bolder mb-1">{{ game.title }}</h1>
+            <!-- Post meta content-->
+            <div class="text-muted fst-italic mb-2">Release Date : {{ game.release_date | date:"Y-m-d" }} &nbsp | &nbsp
+                Publisher : {{ game.publisher }}
+            </div>
+            <!-- multi play 여부 -->
+            {% if game.can_multi_play %}
+            <span class="float-left">&nbsp;&nbsp;<i class="fas fa-users"></i>&nbsp;멀티플레이 가능</span>
+            {% else %}
+            <span class="float-left" style="color:red;">&nbsp;&nbsp;<i
+                    class="fas fa-users-slash"></i>&nbsp;멀티플레이 불가능</span>
+            {% endif %}
 
-                                {% endif %}
-                                <!-- Single comment-->
-                                {% if game.comment_set.exists %}
-                                {% for comment in game.comment_set.all %}
-                                <div class="d-flex" id="comment-{{comment.pk}}">
-                                    <div class="flex-shrink-0 mr-2"><img class="rounded-circle" src="{{comment.get_avatar_url}}" alt="{{comment.author}}" width="60px"/></div>
-                                    <div class="ms-3">
-                                        <div class="fw-bold">{{comment.author.username}} &nbsp;&nbsp;&nbsp;
-                                            <small class="text-muted">{{comment.created_at | date:"Y-m-d"}}</small></div>
-                                        <p>{{comment.content | linebreaks }}</p>
-                                    </div>
+            <!-- 카테고리 -->
+            {% if game.category %}
+            <span class="badge badge-dark float-right">{{game.category}}</span>
+            {% else %}
+            <span class="badge badge-dark float-right">미분류</span>
+            {% endif %}
+
+            <!-- 제조사 -->
+            {% if game.developer %}
+            <button class="badge badge-light float-right mr-2" data-toggle="modal" data-target="#developer">
+                {{game.developer}}
+            </button>
+            {% endif %}
+            <br/><br/>
+
+            <!-- Modal -->
+            <div class="modal fade" id="developer" tabindex="-1" aria-labelledby="developer1" aria-hidden="true">
+                <div class="modal-dialog modal-lg" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="developer1">{{game.developer}}</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-lg-7">
+                                    회사명 : {{ game.developer }}
+                                    <br/><br/>
+                                    <h4>이 회사의 다른 게임</h4>
+                                    {% for g in all %}
+                                    {% if g.developer == game.developer and g.title != game.title %}
+                                    {{g.title}}<br/>
+                                    {% endif %}
+                                    {% endfor %}
                                 </div>
-                                {% endfor %}
-                                {% endif %}
                             </div>
                         </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                        </div>
                     </div>
-
                 </div>
+            </div>
+
+            {% if user.is_authenticated and user == game.publisher %}
+            <div>
+                <a class="btn btn-info btn-sm float-right" href="/blog/update_game/{{game.pk}}/" role="button">
+                    <i class="fas fa-pen"></i> Edit Game Information
+                </a>
+            </div>
+            {% endif %}
+            <br/><br/>
+        </header>
+        <!-- Preview image figure-->
+        <figure class="mb-4"><img class="img-fluid rounded" src="{{game.head_image.url}}" alt="..."/></figure>
+        <!-- Post content-->
+        <section class="mb-5">
+            <p> {{ game.get_content_markdown | safe }} </p>
+        </section>
+    </article>
+    <!-- Comments section-->
+    <div class="mb-5" id="comment-area">
+        <div class="card bg-light">
+            <div class="card-body">
+                <!-- Comment form-->
+                {% if user.is_authenticated %}
+                <form class="mb-4" id="comment-form" method="POST" action="{{game.get_absolute_url}}new_comment/">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        {{comment_form | crispy }}
+                    </div>
+                    <button type="submit" class="btn btn-outline-warning">Submit</button>
+                </form>
+                {% else %}
+                <a role="button" class="btn btn-outline-dark" href="#"
+                   data-toggle="modal" data-target="#loginModal">Log in and leave a comment</a>
+
+                {% endif %}
+                <!-- Single comment-->
+                {% if game.comment_set.exists %}
+                {% for comment in game.comment_set.all %}
+                <div class="d-flex" id="comment-{{comment.pk}}">
+                    <div class="flex-shrink-0 mr-2"><img class="rounded-circle" src="{{comment.get_avatar_url}}"
+                                                         alt="{{comment.author}}" width="60px"/></div>
+                    <div class="ms-3">
+                        <div class="fw-bold">{{comment.author.username}} &nbsp;&nbsp;&nbsp;
+                            <small class="text-muted">{{comment.created_at | date:"Y-m-d"}}</small></div>
+                        <p>{{comment.content | linebreaks }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+</div>
 {% endblock %}

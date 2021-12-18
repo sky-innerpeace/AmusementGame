@@ -18,6 +18,20 @@ class Category(models.Model):
         verbose_name_plural = 'Categories'
 
 
+class Developer(models.Model):  # 개발자(제조사)
+    name = models.CharField(max_length=50, unique=True) #제조사명
+    slug = models.SlugField(max_length=200, unique=True, allow_unicode=True)
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return f'/blog/developer/{self.slug}'
+
+    class Meta:
+        verbose_name_plural = 'Developers'
+
+
 class Game(models.Model):
     title = models.CharField(max_length=30)
     content = MarkdownxField()
@@ -25,7 +39,7 @@ class Game(models.Model):
     head_image = models.ImageField(upload_to='blog/images/%Y/%m/%d/', blank=True)
     price = models.IntegerField()
     publisher = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
-    
+    developer = models.ForeignKey(Developer, null=True, blank=True, on_delete=models.SET_NULL)
 
     category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.SET_NULL)
     release_date = models.DateField()

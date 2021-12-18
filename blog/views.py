@@ -7,7 +7,8 @@ from django.db.models import Q
 from django.views.generic import ListView, DetailView, CreateView, UpdateView
 
 from .forms import CommentForm
-from blog.models import Game, Category
+from blog.models import Game, Category, Developer
+
 
 def new_comment(request, pk):
     if request.user.is_authenticated:
@@ -49,6 +50,7 @@ class GameDetail(DetailView):
         context['categories'] = Category.objects.all()
         context['no_category_game_count'] = Game.objects.filter(category=None).count()
         context['comment_form'] = CommentForm
+        context['all'] = Game.objects.all()
         return context
 
 
@@ -89,7 +91,7 @@ class GameSearch(GameList):
         q = self.kwargs['q']
         game_list = Game.objects.filter(
             # 제목, 카테고리에 포함되어 있는지
-            Q(title__icontains=q) | Q(category__name__contains=q)
+            Q(title__icontains=q) | Q(category__name__icontains=q)
         ).distinct()
         return game_list
 
