@@ -80,7 +80,12 @@
             <br/><br/>
         </header>
         <!-- Preview image figure-->
+        {% if game.head_image %}
         <figure class="mb-4"><img class="img-fluid rounded" src="{{game.head_image.url}}" alt="..."/></figure>
+        {% else %}
+        <img class="card-img-top" src="https://picsum.photos/seed/{{game.id}}/800/400"
+             alt="random image"/>
+        {% endif %}
         <!-- Post content-->
         <section class="mb-5">
             <p> {{ game.get_content_markdown | safe }} </p>

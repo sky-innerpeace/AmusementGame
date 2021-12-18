@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 # Create your views here.
 from blog.models import Game, Comment
@@ -12,13 +12,17 @@ def landing(request):
                   })
 
 def about_me(request):
-    comment_list = Comment.objects.filter(author=request.user)
-    return render(request,
-                  'single_pages/about_me.html',
-                  {
-                      'comment_list':comment_list,
-                  }
-            )
+    if(request.user.is_authenticated):  #로그인했다면
+        comment_list = Comment.objects.filter(author=request.user)
+
+        return render(request,
+                    'single_pages/about_me.html',
+                    {
+                        'comment_list':comment_list,
+                    }
+                )
+    else:   #로그인 안했으면 접근 불가
+        return redirect('/')
 
 def amuse(request):
     game_statistic = {'MOBA':0, 'Simulation':0, 'MMORPG':0, 'Horror':0, 'Adventure':0, '미분류': 0}
@@ -32,7 +36,7 @@ def amuse(request):
         request,
         'single_pages/amuse.html',
         {
-            'game_statistic':game_statistic
+            'game_statistic':game_statistic,
 
         }
     )

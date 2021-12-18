@@ -21,9 +21,14 @@
             <div class="col mb-5">
                 <div class="card h-100 btn-outline-dark">
                     <!-- Product image-->
+                    {% if game.head_image %}
                     <a href="{{game.get_absolute_url}}">
                         <img class="card-img-top" src="{{game.head_image.url}}" alt="{{game}}의 head image"/>
                     </a>
+                    {% else %}
+                        <img class="card-img-top" src="https://picsum.photos/seed/{{game.id}}/800/400"
+                             alt="random image"/>
+                    {% endif %}
                     <!-- Product details-->
                     <div class="card-body btn mt-auto p-4">
                         <div class="text-center">
