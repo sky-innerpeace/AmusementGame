@@ -62,7 +62,7 @@
                         <span class="badge badge-dark float-right">
                             <img class="rounded-circle mr-1" width="20px"
                                  src="{{game.get_avatar_url}}" alt="{{game.publisher}}">
-                            {{game.publisher.username}}  &nbsp;&nbsp;  {{game.release_date}}
+                            {{game.publisher.username}}  &nbsp;&nbsp;  {{game.release_date | date:"Y-m-d" }}
                         </span>
 
                     </div>

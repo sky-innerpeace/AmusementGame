@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
 # Create your views here.
-from blog.models import Game
+from blog.models import Game, Comment
 
 
 def landing(request):
@@ -12,7 +12,13 @@ def landing(request):
                   })
 
 def about_me(request):
-    return render(request, 'single_pages/about_me.html')
+    comment_list = Comment.objects.filter(author=request.user)
+    return render(request,
+                  'single_pages/about_me.html',
+                  {
+                      'comment_list':comment_list,
+                  }
+            )
 
 def amuse(request):
     game_statistic = {'MOBA':0, 'Simulation':0, 'MMORPG':0, 'Horror':0, 'Adventure':0}

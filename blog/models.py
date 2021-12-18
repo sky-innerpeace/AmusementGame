@@ -43,7 +43,10 @@ class Game(models.Model):
         if self.publisher.socialaccount_set.exists():
             return self.publisher.socialaccount_set.first().get_avatar_url()
         else:
-            return f'https://doitdjango.com/avatar/id/386/eea990dfe51e2ca3/svg/{self.publisher.email}/'
+            if self.publisher.email:
+                return f'https://doitdjango.com/avatar/id/386/eea990dfe51e2ca3/svg/{self.publisher.email}/'
+            else:
+                return f'https://doitdjango.com/avatar/id/386/eea990dfe51e2ca3/svg/{self.publisher}/'
 
 
 class Comment(models.Model):
@@ -62,4 +65,7 @@ class Comment(models.Model):
         if self.author.socialaccount_set.exists():
             return self.author.socialaccount_set.first().get_avatar_url()
         else:
-            return f'https://doitdjango.com/avatar/id/386/eea990dfe51e2ca3/svg/{self.author.email}/'
+            if self.author.email:
+                return f'https://doitdjango.com/avatar/id/386/eea990dfe51e2ca3/svg/{self.author.email}/'
+            else:
+                return f'https://doitdjango.com/avatar/id/386/eea990dfe51e2ca3/svg/{self.author}/'

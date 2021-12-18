@@ -31,7 +31,7 @@ def new_comment(request, pk):
 class GameList(ListView):
     model = Game
     ordering = '-pk'
-    paginate_by = 3
+    paginate_by = 8
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context=super(GameList, self).get_context_data()
@@ -117,4 +117,3 @@ def category_page(request, slug):
             'category': category,
         }
     )
-
