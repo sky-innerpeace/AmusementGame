@@ -56,7 +56,7 @@ class GameDetail(DetailView):
 
 class GameCreate(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = Game
-    fields = ['title', 'content', 'head_image', 'price', 'category', 'release_date', 'can_multi_play']
+    fields = ['title', 'content', 'head_image', 'price', 'category', 'developer', 'release_date', 'can_multi_play']
 
     def test_func(self):
         return self.request.user.is_superuser or self.request.user.is_staff
