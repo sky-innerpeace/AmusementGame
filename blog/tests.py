@@ -26,27 +26,5 @@ class TestView(TestCase):
             release_date = '2010-11-11',
             can_multi_play=False
         )
-        self.assertEqual(game_001.get_absolute_url(), '/blog/1')
+        self.assertEqual(game_001.get_absolute_url(), '/blog/1/')
 
-    def test_create_game(self):
-        response = self.client.get('/blog/create_game/')
-        self.assertNotEqual(response.status_code, 200)
-
-        self.client.login(username='sky', password='somepassword')
-        response = self.client.get('/blog/create_game/')
-        self.assertEqual(response.status_code, 200)
-
-        self.client.post(
-            '/blog/create_game/',
-            {
-                'title': "글쓰기",
-                'content': "내ㅑ용",
-                'price': 20110,
-                'release_date': '2020-10-11',
-                'can_multi_play':'False'
-            }
-        )
-        self.assertEqual(Game.objects.count(),1)
-        last_game = Game.objects.last()
-        self.assertEqual(last_game.title, "글쓰기")
-        self.assertEqual(last_game.publisher.username, 'sky')

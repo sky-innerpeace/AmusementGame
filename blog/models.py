@@ -57,6 +57,7 @@ class Game(models.Model):
     def get_avatar_url(self):
         if self.publisher.socialaccount_set.exists():
             return self.publisher.socialaccount_set.first().get_avatar_url()
+        # 랜덤 아바타를 생성하는 유저 중에 이메일이 없는 유저 예외처리
         else:
             if self.publisher.email:
                 return f'https://doitdjango.com/avatar/id/386/eea990dfe51e2ca3/svg/{self.publisher.email}/'
@@ -79,6 +80,7 @@ class Comment(models.Model):
     def get_avatar_url(self):
         if self.author.socialaccount_set.exists():
             return self.author.socialaccount_set.first().get_avatar_url()
+        # 랜덤 아바타를 생성하는 유저 중에 이메일이 없는 유저 예외처리
         else:
             if self.author.email:
                 return f'https://doitdjango.com/avatar/id/386/eea990dfe51e2ca3/svg/{self.author.email}/'

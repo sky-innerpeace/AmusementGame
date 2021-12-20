@@ -33,6 +33,7 @@
                         <img class="rounded-circle" width="25px"
                              src="{{user.socialaccount_set.all.0.get_avatar_url}}">
                         {% else %}
+                        <!-- 랜덤 아바타를 생성하는 유저 중에 이메일이 없는 유저 예외처리 -->
                         {% if user.email %}
                         <img class="rounded-circle" width="25px"
                              src="https://doitdjango.com/avatar/id/386/eea990dfe51e2ca3/svg/{{user.email}}/">
@@ -60,7 +61,7 @@
             </div>
         </div>
     </nav>
-
+        <!-- 로그인 모달 -->
         <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">

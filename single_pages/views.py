@@ -21,7 +21,7 @@ def about_me(request):
                         'comment_list':comment_list,
                     }
                 )
-    else:   #로그인 안했으면 접근 불가
+    else:   # 로그인 안했으면 접근 불가
         return redirect('/')
 
 def amuse(request):

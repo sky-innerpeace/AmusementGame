@@ -54,6 +54,7 @@
                                     회사명 : {{ game.developer }}
                                     <br/><br/>
                                     <h4>이 회사의 다른 게임</h4>
+                                    <!-- 게임 전체 리스트 받아와서 같은 회사인 게임만 출력 -->
                                     {% for g in all %}
                                     {% if g.developer == game.developer and g.title != game.title %}
                                     {{g.title}}<br/>
@@ -68,7 +69,7 @@
                     </div>
                 </div>
             </div>
-
+            <!-- 수정 버튼 -->
             {% if user.is_authenticated and user == game.publisher %}
             <div>
                 <a class="btn btn-info btn-sm float-right" href="/blog/update_game/{{game.pk}}/" role="button">
@@ -87,6 +88,7 @@
         {% endif %}
         <!-- Post content-->
         <section class="mb-5">
+            <!-- 마크다운 적용 -->
             <p> {{ game.get_content_markdown | safe }} </p>
         </section>
     </article>
